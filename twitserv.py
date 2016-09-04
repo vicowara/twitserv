@@ -6,10 +6,14 @@ import tweepy
 from stream import MyStreamListener
 from config import auth
 
-if __name__=="__main__":
+
+def main():
         stream = tweepy.Stream(auth, MyStreamListener(), secure=True)
         while True:
                 try:
                         stream.userstream()
                 except Exception as e:
                         print(e)
+
+if __name__ == "__main__":
+	main()

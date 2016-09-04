@@ -17,3 +17,5 @@ forbidden_names = []
 
 owm_token = ""
 default_location = ""
+
+pidfile = ""
