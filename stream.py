@@ -4,6 +4,7 @@ import datetime
 import tweepy
 import subprocess
 import threading
+from systemd import journal
 import config
 from config import api
 from plugins import commands,commands_with_args
@@ -30,21 +31,25 @@ class MyStreamListener(tweepy.StreamListener):
 
 			# 引数がない場合
 			if reply in commands and reply_args is None:
-				print(" ".join(["[", str(datetime.datetime.now()), "]: received", reply, "message from", reply_name]))
+				#print(" ".join(["[", str(datetime.datetime.now()), "]: received", reply, "message from", reply_name]))
+				journal.send(" ".join(["received", reply, "message from", reply_name]))
 				th = threading.Thread(target=(lambda: api.update_status("".join(["@", reply_name, "\n", commands[reply]()])[:140], in_reply_to_status_id = reply_id)))
 				th.start()
 
 			# 引数がある場合
 			if reply in commands_with_args and reply_args is not None:
-				print(" ".join(["[", str(datetime.datetime.now()), "]: received", reply] + reply_args + ["message from", reply_name]))
+				#print(" ".join(["[", str(datetime.datetime.now()), "]: received", reply] + reply_args + ["message from", reply_name]))
+				journal.send(" ".join(["received", reply] + reply_args + ["message from", reply_name]))
 				th = threading.Thread(target=(lambda *args: api.update_status("".join(["@", reply_name, "\n", commands_with_args[reply](args)])[:140], in_reply_to_status_id = reply_id)), args=reply_args)
 				th.start()
 		return True
 
 	def on_error(self, status):
-		print("error:{}".format(status))
+		#print("error:{}".format(status))
+		journal.send("error:{}".format(status))
 		return True
 
 	def on_timeout(self):
-		print("timeout")
+		#print("timeout")
+		journal.send("timeout")
 		return True

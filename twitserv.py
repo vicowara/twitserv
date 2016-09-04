@@ -3,6 +3,8 @@
 
 import tweepy
 
+from systemd import journal
+
 from stream import MyStreamListener
 from config import auth
 
@@ -13,7 +15,8 @@ def main():
                 try:
                         stream.userstream()
                 except Exception as e:
-                        print(e)
+                        #print(e)
+                        journal.send(e)
 
 if __name__ == "__main__":
 	main()
