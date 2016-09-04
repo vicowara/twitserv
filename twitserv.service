@@ -1,0 +1,11 @@
+[Unit]
+Description=Twitter Reply Server
+
+[Service]
+ExecStart=/usr/local/twitserv/twitservd.py
+Restart=always
+Type=forking
+PIDFile=/var/run/twitserv.pid
+
+[Install]
+WantedBy=multi-user.target
