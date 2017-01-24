@@ -8,6 +8,7 @@ from config import api, forbidden_names, owm_token, default_location
 
 speedtest_lastupdate = None
 speedtest_cache = None
+pong_count = 0
 
 
 # speedtest --simpleの結果を返す
@@ -67,6 +68,12 @@ def ouyou():
 	else:
 		return "平成28年度秋期情報処理技術者試験は 2016-10-16 09:00:00 に開催されました"
 
+# 応答確認
+def pong():
+	global pong_count
+	pong_count += 1
+	return "pong({0}回目)".format(pong_count)
+
 # 今日の天気
 def weather(*args):
 	try:
@@ -98,7 +105,7 @@ def weather(*args):
 # 辞書形式で{"実行コマンド名":関数名}を連名していく
 # commands_with_argsと競合する関数は原則として入れないほうが良い
 
-commands = {"speedtest":speedtest, "rssi":rssi, "応用":ouyou, "ouyou":ouyou, "応用情報":ouyou, "temperature":temperature, "温度":temperature, "weather":weather, "天気":weather}
+commands = {"speedtest":speedtest, "rssi":rssi, "応用":ouyou, "ouyou":ouyou, "応用情報":ouyou, "temperature":temperature, "温度":temperature, "weather":weather, "天気":weather, "ping":pong}
 
 # with arguments commands
 
