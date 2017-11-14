@@ -52,7 +52,7 @@ def name_change(args):
 	for n in forbidden_names:
 		if n in name:
 			return ""
-	name = name[:20]
+	name = name[:50]
 	try:
 		api.update_profile(name=name)
 		result = name + "に変更しました"
